@@ -1,0 +1,200 @@
+mysql> create database bankAppDb
+    -> ;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    3
+Current database: employee
+
+Query OK, 1 row affected (0.14 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| bankappdb          |
+| employee           |
+| mysql              |
+| performance_schema |
+| sakila             |
+| test               |
+| world              |
++--------------------+
+8 rows in set (0.09 sec)
+
+mysql> use bankAppDb
+Database changed
+mysql> CREATE TABLE customers(
+    ->      customerID int,
+    ->      customerName varchar(20),
+    ->         customerPassword varchar(15),
+    ->       customerEmail varchar(25),
+    ->    customerAddress varchar(50),
+    ->         customerDateOfBirth Date,
+    ->        customerAccountId varchar(25)
+    ->      );
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> INSERT INTO CUSTOMERS VALUES(1,"TOM","t1","tom@gmail.com","abc",'1945-06-15',12345);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO CUSTOMERS VALUES(2,"SAM","s1","sam@gmail.com","ab",'1945-07-15',12344);
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  INSERT INTO CUSTOMERS VALUES(3,"PAM","p1","pam@gmail.com","ac",'1965-08-15',12343);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> ALTER TABLE CUSTOMERS ADD PRIMARY kEY(customerId);
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> ALTER TABLE CUSTOMERS ADD PRIMARY kEY(customerId);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> create table bankAccounts(accountId int,accountType varchar(20),accountBalance double(20,2),primary key (accountId));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> alter table customers change customerAccountId accountId int(40);
+Query OK, 3 rows affected (0.12 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql>  alter table customers modify column accountId int;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  INSERT INTO bankAccounts VALUES(12345,"SAVINGS",50000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql>  INSERT INTO bankAccounts VALUES(12344,"CURRENT",40000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO bankAccounts VALUES(12343,"SAVINGS",30000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> ALTER TABLE customers add foreign key(accountId) references bankAccounts(accountId);
+Query OK, 3 rows affected (0.11 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | TOM          | t1               | tom@gmail.com | abc             | 1945-06-15          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from bankAccounts;
++-----------+-------------+----------------+
+| accountId | accountType | accountBalance |
++-----------+-------------+----------------+
+|     12343 | SAVINGS     |       30000.00 |
+|     12344 | CURRENT     |       40000.00 |
+|     12345 | SAVINGS     |       50000.00 |
++-----------+-------------+----------------+
+3 rows in set (0.02 sec)
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | TOM          | t3               | tom@gmail.com | abc             | 1945-06-15          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | TOM          | t1               | tom@gmail.com | abc             | 1945-06-15          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | Tom          | t3               | tom@gmail.com | aabbcc          | 1999-10-03          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE customers add foreign key(accountId) references bankAccounts(accountId);
+Query OK, 3 rows affected (0.30 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | Tom          | t3               | tom@gmail.com | aabbcc          | 1999-10-03          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | Tom          | t3               | tom@gmail.com | aabbcc          | 1999-10-03          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from bankAccounts;
++-----------+-------------+----------------+
+| accountId | accountType | accountBalance |
++-----------+-------------+----------------+
+|     12343 | SAVINGS     |       29000.00 |
+|     12344 | CURRENT     |       51000.00 |
+|     12345 | SAVINGS     |       40000.00 |
++-----------+-------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select accountBalance FROM bankAccounts where accountId=1;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM customers, bankAccounts where customers.accountId = bankAccounts.accountId and customerEmail =tom@gmail.com AND customerPassword =t3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@gmail.com AND customerPassword =t3' at line 1
+mysql> SELECT * FROM customers, bankAccounts where customers.accountId = bankAccounts.accountId and customerEmail ="tom@gmail.com" AND customerPassword ="t3";
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+-----------+-------------+----------------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId | accountId | accountType | accountBalance |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+-----------+-------------+----------------+
+|          1 | Tom          | t3               | tom@gmail.com | aabbcc          | 1999-10-03          |     12345 |     12345 | SAVINGS     |       40000.00 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+-----------+-------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> select accountBalance FROM bankAccounts where accountId=1;
+Empty set (0.00 sec)
+
+mysql> update customers set customerName="TOM" ,customerPassword= "t1",customerAddress="ABC" where customerId= 1;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customers;
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+| customerID | customerName | customerPassword | customerEmail | customerAddress | customerDateOfBirth | accountId |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+|          1 | TOM          | t1               | tom@gmail.com | ABC             | 1999-10-03          |     12345 |
+|          2 | SAM          | s1               | sam@gmail.com | ab              | 1945-07-15          |     12344 |
+|          3 | PAM          | p1               | pam@gmail.com | ac              | 1965-08-15          |     12343 |
++------------+--------------+------------------+---------------+-----------------+---------------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from bankAccounts;
++-----------+-------------+----------------+
+| accountId | accountType | accountBalance |
++-----------+-------------+----------------+
+|     12343 | SAVINGS     |       29000.00 |
+|     12344 | CURRENT     |       51000.00 |
+|     12345 | SAVINGS     |       40000.00 |
++-----------+-------------+----------------+
+3 rows in set (0.00 sec)
